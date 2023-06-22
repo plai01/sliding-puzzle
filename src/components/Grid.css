@@ -1,0 +1,12 @@
+/*.grid-img {
+    background-image: url('demo.jpg');
+}*/
+.grid-container {
+    display : grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 3px;
+}
+.grid-item {
+    /*padding: 50px;*/
+    text-align : center;
+}
