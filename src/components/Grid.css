@@ -9,4 +9,12 @@
 .grid-item {
     /*padding: 50px;*/
     text-align : center;
+    font-size: 300%;
+}
+.grid-item-available {
+    background-color: orange;
+}
+.grid-item-available:hover {
+    cursor: grab;
+    color:red;
 }

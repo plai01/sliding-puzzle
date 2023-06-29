@@ -20,15 +20,6 @@ const loadImage = (setImgInfo, imgUrl) => {
     }
 };
 
-const initSquare = (cnt, setSquare) => {
-    let rtn = Array.from(Array(cnt).keys());
-    for(let i=cnt - 1; i>0; i--) {
-        let val = Math.random()*i;
-        let item = rtn.splice(val, 1);
-        item.map(v => {rtn.push(v)});
-    }
-    setSquare(rtn);
-}
 
 const createGridCell = (imgUrl, cellSize, square, onClickEvent) => {
     let content = [];
@@ -54,24 +45,25 @@ function Cell({style, size, value, onCellClick}) {
     style.width = `${size}px`;
     style.height = `${size}px`
 
+    let css = "grid-item";
+    if (value != 0)
+        css += " grid-item-available";
+
     return(
-        <button style={style} className="grid-item" onClick={onCellClick}>
+        <button style={style} className={css} onClick={onCellClick}>
             {value}
         </button>
     )
 }
 
-function Grid() {
+function Grid({history, setHistory, square, setSquare, cellCnt}) {
 
     const[imgInfo, setImgInfo] = useState({});
     const imgUrl = "/demo.jpg"
     const cellSize = 300;
-    const cellCnt = 9;
-    const[square, setSquare] = useState(Array(9).fill(null));
 
     useEffect(() => {
         loadImage(setImgInfo, imgUrl);
-        initSquare(cellCnt, setSquare);
     }, [])
 
     function handleClick(ix) {
@@ -79,6 +71,7 @@ function Grid() {
         let oldY = Math.floor(ix / divisor);
         let oldX = ix % divisor
         let tmp = square.slice();
+        let tmpHistory = history.slice();
         let dx = [0,0,-1,1];
         let dy = [-1,1,0,0];
 
@@ -92,13 +85,17 @@ function Grid() {
                     tmp[ix] = tmp[ixNew];
                     tmp[ixNew] = val;
                     withChange = true;
+
+                    //set history
+                    tmpHistory.push(ixNew);
                     break;
                 }
             }
         }
-        if (withChange)
+        if (withChange) {
             setSquare(tmp);
-        console.log(square);
+            setHistory(tmpHistory);
+        }
     }
 
     return (
@@ -111,45 +108,3 @@ function Grid() {
 
 
 export {Grid}
-
-
-//import { useState } from 'react';
-//
-//function Square({ value, onSquareClick }) {
-//  return (
-//    <button className="square" onClick={onSquareClick}>
-//      {value}
-//    </button>
-//  );
-//}
-//
-//export default function Grid() {
-//  const [squares, setSquares] = useState(Array(9).fill(null));
-//
-//  function handleClick(i) {
-//    const nextSquares = squares.slice();
-//    nextSquares[i] = 'X';
-//    setSquares(nextSquares);
-//  }
-//
-//  return (
-//    <>
-//      <div className="board-row">
-//        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-//        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-//        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-//      </div>
-//      <div className="board-row">
-//        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-//        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-//        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-//      </div>
-//      <div className="board-row">
-//        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-//        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-//        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-//      </div>
-//    </>
-//  );
-//}
-//
