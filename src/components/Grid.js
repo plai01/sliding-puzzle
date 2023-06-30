@@ -78,18 +78,19 @@ function Cell({style, cssOverlay, size, value, onCellClick}) {
     )
 }
 
-function Grid({history, setHistory, square, setSquare, cellCnt}) {
+function Grid({history, setHistory, square, setSquare}) {
 
     const[imgInfo, setImgInfo] = useState({});
     const imgUrl = "/demo.jpg"
-    const cellSize = 300;
+    const divisor = Math.sqrt(square.length);
+    const cellSize = 900 / divisor;
+    const gridColumn = "auto ".repeat(divisor);
 
     useEffect(() => {
         loadImage(setImgInfo, imgUrl);
     }, [])
 
     function handleClick(ix) {
-        const divisor = Math.sqrt(cellCnt);
         let oldY = Math.floor(ix / divisor);
         let oldX = ix % divisor
         let tmp = square.slice();
@@ -121,7 +122,7 @@ function Grid({history, setHistory, square, setSquare, cellCnt}) {
     }
 
     return (
-        <div className="grid-container">
+        <div className="grid-container" style={{gridTemplateColumns: `${gridColumn}`}}>
             {createGridCell(imgUrl, cellSize, square, handleClick)}
         </div>
     );

@@ -57,7 +57,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <CtrlPanel history={history} onResetClick={handleReset} onUndoClick={handleUndo}></CtrlPanel>
-        <Grid history={history} setHistory={setHistory} square={square} setSquare={setSquare} cellCnt={cellCnt}></Grid>
+        <Grid history={history} setHistory={setHistory} square={square} setSquare={setSquare}></Grid>
       </header>
     </div>
   );
