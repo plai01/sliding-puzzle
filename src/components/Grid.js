@@ -28,17 +28,38 @@ const createGridCell = (imgUrl, cellSize, square, onClickEvent) => {
     for(let i = 0; i < square.length; i++) {
         let x = square[i] % divisor;
         let y = Math.floor(square[i] / divisor);
-        let positionX = cellSize * x * -1;
-        let positionY = cellSize * y * -1;
+        let imgPostX = cellSize * x * -1;
+        let imgPostY = cellSize * y * -1;
+
+        let cellX = i % divisor;
+        let cellY = Math.floor(i / divisor);
+
+
+        let cssOverlay = "grid-overlay";
+        let ix0 = (cellY - 1) * divisor + cellX;
+        if (cellY > 0 && ix0 >=0 && ix0 < square.length && square[ix0] == 0)
+            cssOverlay += " up";
+        ix0 = (cellY + 1) * divisor + cellX;
+        if (ix0 >=0 && ix0 < square.length && square[ix0] == 0)
+            cssOverlay += " down";
+        ix0 = cellY * divisor + cellX - 1;
+        if (cellX > 0 && ix0 >=0 && ix0 < square.length && square[ix0] == 0)
+            cssOverlay += " left";
+        ix0 = cellY * divisor + cellX + 1;
+        if (cellX + 1 < divisor && ix0 >=0 && ix0 < square.length && square[ix0] == 0)
+            cssOverlay += " right";
+        console.log(cellX, cellY)
+        console.log(cssOverlay);
+
         content.push(<Cell style={{backgroundImage : `url(${imgUrl})`, backgroundSize: `${cellSize * divisor}px ${cellSize * divisor}px`, 
-            backgroundPosition: `left ${positionX}px top ${positionY}px`}} 
-            size={cellSize} value={square[i]} 
+            backgroundPosition: `left ${imgPostX}px top ${imgPostY}px`}} 
+            size={cellSize} cssOverlay={cssOverlay} value={square[i]} 
             onCellClick={() => onClickEvent(i)}></Cell>)       
     }
     return content;
 }
 
-function Cell({style, size, value, onCellClick}) {
+function Cell({style, cssOverlay, size, value, onCellClick}) {
 
     if (value == 0)
         style.backgroundImage = '';
@@ -52,6 +73,7 @@ function Cell({style, size, value, onCellClick}) {
     return(
         <button style={style} className={css} onClick={onCellClick}>
             {value}
+            <div className={cssOverlay}></div>
         </button>
     )
 }

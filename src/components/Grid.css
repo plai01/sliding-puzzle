@@ -10,11 +10,49 @@
     /*padding: 50px;*/
     text-align : center;
     font-size: 300%;
+    position: relative;
 }
 .grid-item-available {
     background-color: orange;
+    
 }
 .grid-item-available:hover {
     cursor: grab;
     color:red;
 }
+.grid-overlay {
+    opacity: 0;
+    position: absolute;
+    top:0%;
+    left:0%;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+.grid-overlay.up{
+    background-image: url("/public/icon/up-lg.svg");
+}
+.grid-overlay.down{
+    background-image: url("/public/icon/down-lg.svg");
+}
+.grid-overlay.left{
+    background-image: url("/public/icon/left-lg.svg");
+}
+.grid-overlay.right{
+    background-image: url("/public/icon/right-lg.svg");
+}
+
+.grid-overlay.up:hover,
+.grid-overlay.down:hover,
+.grid-overlay.left:hover,
+.grid-overlay.right:hover {
+    background-color: green;
+    opacity: 0.3;
+}
+
+/*.grid-overlay:hover {
+    background-color: green;
+    opacity: 0.3;
+}*/
