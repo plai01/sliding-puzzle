@@ -78,7 +78,7 @@ function Cell({style, cssOverlay, size, value, onCellClick}) {
     )
 }
 
-function Grid({history, setHistory, square, setSquare}) {
+function Grid({history, setHistory, square, setSquare, isComplete}) {
 
     const[imgInfo, setImgInfo] = useState({});
     const imgUrl = "/demo.jpg"
@@ -91,6 +91,8 @@ function Grid({history, setHistory, square, setSquare}) {
     }, [])
 
     function handleClick(ix) {
+        if (isComplete)
+            return;
         let oldY = Math.floor(ix / divisor);
         let oldX = ix % divisor
         let tmp = square.slice();

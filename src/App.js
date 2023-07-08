@@ -7,11 +7,13 @@ import { CtrlPanel } from './components/CtrlPanel';
 function App() {
   const[square, setSquare] = useState(Array(9).fill(null));
   const [history, setHistory] = useState([]);
+  const [complete, setComplete] = useState(false);
   const cellCnt = 9;
 
   function handleReset() {
     initSquare(cellCnt, setSquare);
     setHistory([]);
+    setComplete(false);
     console.log("Reset");
   }
 
@@ -41,23 +43,46 @@ function App() {
   }
 
   useEffect(() => {
+    // init square array
     handleReset();
   }, [])
+
+  useEffect(() => {
+    if (isComplete(square)) {
+      setComplete(true)
+      console.log("Completed");
+    }
+    else {
+      console.log("incompleted");
+    }
+  }, [square])
 
   const initSquare = (cnt, setSquare) => {
     let rtn = Array.from(Array(cnt).keys());
     for(let i=cnt - 1; i>0; i--) {
-        let val = Math.random()*i;
-        let item = rtn.splice(val, 1);
-        item.map(v => {rtn.push(v)});
+      let val = Math.random()*i;
+      let item = rtn.splice(val, 1);
+      item.map(v => {rtn.push(v)});
     }
     setSquare(rtn);
   }
+
+  const isComplete = (square) => {
+    let isComplete = true;
+    for(let i = 0; i< square.length; i++) {
+      if (square[i] != i) {
+        isComplete = false;
+        break;
+      }
+    }
+    return isComplete;
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <CtrlPanel history={history} onResetClick={handleReset} onUndoClick={handleUndo}></CtrlPanel>
-        <Grid history={history} setHistory={setHistory} square={square} setSquare={setSquare}></Grid>
+        <CtrlPanel history={history} onResetClick={handleReset} onUndoClick={handleUndo} isComplete={complete}></CtrlPanel>
+        <Grid history={history} setHistory={setHistory} square={square} setSquare={setSquare} isComplete={complete}></Grid>
       </header>
     </div>
   );
